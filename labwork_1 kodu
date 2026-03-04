@@ -1,0 +1,24 @@
+module ALU_4Bit(
+
+input logic [3:0] A,
+input logic [3:0] B,
+input logic [2:0] ALU_select,
+output logic [7:0] ALU_out);
+
+always_comb begin
+
+    case(ALU_select)
+    3'b000: ALU_out=A+B;
+    3'b001: ALU_out=A-B;
+    3'b010: ALU_out=A*B;
+    3'b011: ALU_out=(B!=0)? A/B : 8'b0;
+    3'b100: ALU_out={4'b0000, (A&B)};
+    3'b101: ALU_out={4'b0000, (A|B)};
+    3'b110: ALU_out={4'b0000, (A^B)};
+    3'b111: ALU_out={4'b0000, (~A)};
+    default: ALU_out=8'b00000000;
+    endcase
+    
+    end
+    
+endmodule 
