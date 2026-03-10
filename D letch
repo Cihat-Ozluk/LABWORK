@@ -1,0 +1,20 @@
+module SRLetch(
+input logic D,
+input logic C,
+output logic Q);
+
+initial
+begin
+Q=1'b1;
+end
+
+always_comb begin
+casex({D,C})
+2'bx0:assign Q=Q;
+2'b01:assign Q=1'b0;
+2'b11:assign Q=1'b1;
+endcase
+end
+    
+endmodule
+        
