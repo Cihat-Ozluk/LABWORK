@@ -1,0 +1,47 @@
+module ALU_4Bit(
+    input  logic [3:0] A, B,      
+    input  logic [2:0] ALU_select,
+    output logic [7:0] ALU_out,    
+    output logic carry,          
+    output logic overflow,       
+    output logic zero,          
+    output logic sign   
+);
+
+    always_comb begin
+        ALU_out  = 8'b0;
+        carry    = 1'b0;
+        overflow = 1'b0;
+
+        case(ALU_select)
+            3'b000: begin 
+                ALU_out = A + B;
+                carry   = (A + B > 15); 
+                overflow = (A[3] == B[3]) && (ALU_out[3] != A[3]);
+            end
+            
+            3'b001: begin 
+                ALU_out = A - B;
+                carry   = (A < B);  //borç alma işlemi 
+                overflow = (A[3] != B[3]) && (ALU_out[3] != A[3]);
+            end
+            
+            3'b010: ALU_out = {4'b0, A << 1};  //left shift
+            
+            3'b011: ALU_out = {4'b0, A >> 1};  // right shift
+            
+            3'b100: ALU_out = {4'b0, (A & B)};  //and
+            
+            3'b101: ALU_out = {4'b0, (A | B)};   // or
+            
+            3'b110: ALU_out = {4'b0, (~A)};     //not
+            
+            3'b111: ALU_out = {4'b0, (A ^ B)};   //xor
+            default: ALU_out = 8'b0;
+        endcase
+
+        zero = (ALU_out[3:0] == 4'b0); 
+        sign = ALU_out[3];
+    end
+
+endmodule
