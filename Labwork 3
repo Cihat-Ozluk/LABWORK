@@ -1,0 +1,79 @@
+module RegisterFile (
+    input  logic [15:0] address,   
+    output logic [15:0] read_data  
+);
+
+    
+    always_comb begin
+        case (address)
+            16'd100: read_data = 16'd9;     
+            16'd200: read_data = 16'd20;    
+            16'd300: read_data = 16'd70;    
+            16'd400: read_data = 16'd23;    
+            16'd500: read_data = 16'd202;   
+            16'd600: read_data = 16'hFFFF;  
+
+            default: read_data = 16'd0;   
+        endcase
+    end
+
+endmodule
+
+
+
+
+
+test bench dosyası
+
+`timescale 1ns / 1ps
+
+module tb_RegisterFile();
+
+    // Testbench sinyalleri
+    logic [15:0] addr_tb;
+    logic [15:0] data_tb;
+
+    // Test edilecek modülü (RegisterFile) çağırıyoruz
+    RegisterFile dut (
+        .address(addr_tb),
+        .read_data(data_tb)
+    );
+
+    // Test senaryosu
+    initial begin
+        // Başlangıç mesajı
+        $display("--- Register File Testi Basliyor (ID: 20230702009) ---");
+        
+        // Adres 100 testi
+        addr_tb = 16'd100; #10;
+        $display("Adres: %d | Beklenen: 9   | Alinan: %d", addr_tb, data_tb);
+
+        // Adres 200 testi
+        addr_tb = 16'd200; #10;
+        $display("Adres: %d | Beklenen: 20  | Alinan: %d", addr_tb, data_tb);
+
+        // Adres 300 testi
+        addr_tb = 16'd300; #10;
+        $display("Adres: %d | Beklenen: 70  | Alinan: %d", addr_tb, data_tb);
+
+        // Adres 400 testi
+        addr_tb = 16'd400; #10;
+        $display("Adres: %d | Beklenen: 23  | Alinan: %d", addr_tb, data_tb);
+
+        // Adres 500 testi
+        addr_tb = 16'd500; #10;
+        $display("Adres: %d | Beklenen: 202 | Alinan: %d", addr_tb, data_tb);
+
+        // Adres 600 testi (Binary 1111... yani Hex FFFF)
+        addr_tb = 16'd600; #10;
+        $display("Adres: %d | Beklenen: %h | Alinan: %h", addr_tb, 16'hFFFF, data_tb);
+
+        // Tanımsız bir adres testi (Default durumunu görmek için)
+        addr_tb = 16'd999; #10;
+        $display("Adres: %d | Beklenen: 0   | Alinan: %d", addr_tb, data_tb);
+
+        $display("--- Test Tamamlandi ---");
+        $finish; // Simülasyonu bitir
+    end
+
+endmodule
