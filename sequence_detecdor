@@ -1,0 +1,19 @@
+module sequence_detector(
+input logic x,clk,clr,
+output logic y,
+output logic q1=0,
+output logic q2=0);
+
+always_ff @(posedge clk)
+if (clr==1)
+begin
+q1 <= 1'b0;
+q2 <= 1'b0;
+end
+else
+begin
+q1 <= (x&~q2&~q1) + (~x&q2&~q1) + (x&q2&q1);
+q2 <= (x&~q2&q1) + (q2&~q1);
+y  <= q2&q1&x;
+end
+endmodule
