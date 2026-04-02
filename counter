@@ -1,0 +1,37 @@
+module counter_typedef(
+    input logic clk,
+    input logic pulse,
+    output logic out);
+
+typedef enum logic [1:0] {A, B, C, D} state_type;
+
+state_type state;
+
+initial begin
+    state = B;
+end
+
+always_ff @(posedge clk) 
+begin
+    out = 0;
+    if (pulse==0) begin
+        case (state)
+            A: begin state <= A;out=1;end
+            B: begin state <= A;out =1;end
+            C: begin state <= C;out =0;end
+            D: begin state <= C;out =0;end
+        endcase
+    end
+    
+    else begin
+           case (state)
+            A: state <= B;
+            B: state <= C;
+            C: state <= D;
+            D: state <= A;
+        endcase 
+    end
+    
+end
+
+endmodule
