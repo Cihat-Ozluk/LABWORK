@@ -1,0 +1,19 @@
+module nand_gate(input a,input b,output out);
+  
+  supply1 vdd;
+  supply0 gnd;
+  
+  wire mid;
+  wire mid2;
+  
+    
+  pmos p1(mid2,vdd,b);
+  pmos n2(mid2,vdd,a);
+  
+  nmos n1(mid2,mid,a);
+  nmos n2(mid,gnd,b);
+  
+  pmos p3(out,vdd,mid2);
+  nmos n3(out,gnd,mid2);
+  
+endmodule
