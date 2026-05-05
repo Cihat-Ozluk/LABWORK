@@ -1,0 +1,19 @@
+module or_gate(input a,input b,output out);
+  
+  supply1 vdd;
+  supply0 gnd;
+  
+  wire mid;
+  wire mid2;
+  
+    
+  pmos p1(mid,vdd,b);
+  pmos p2(mid2,mid,a);
+  
+  nmos n1(mid2,gnd,b);
+  nmos n2(mid2,gnd,a);
+  
+  pmos p3(out,vdd,mid2);
+  nmos n3(out,gnd,mid2);
+  
+endmodule
